@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Coach</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --background: #f8f9fa;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background-color: var(--background);
+            color: var(--primary-color);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        label {
+            font-weight: 500;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        input, select {
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        button {
+            background: var(--success-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background: #219150;
+        }
+
+        .back-btn {
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .back-btn:hover {
+            background: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .form-group {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            button {
+                width: 100%;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fas fa-user-tie"></i>Add New Coach</h2>
+
+        <form action="/admin/coach/add" method="post">
+            <div class="form-group">
+                <label for="name"><i class="fas fa-id-card"></i>Coach Name:</label>
+                <input type="text" id="name" name="name" required placeholder="Enter coach name">
+            </div>
+
+            <div class="form-group">
+                <label for="experience"><i class="fas fa-briefcase"></i>Experience (Years):</label>
+                <input type="number" id="experience" name="experience" required placeholder="Years of experience">
+            </div>
+
+            <div class="form-group">
+                <label for="specialization"><i class="fas fa-certificate"></i>Specialization:</label>
+                <input type="text" id="specialization" name="specialization" required placeholder="Coaching specialization">
+            </div>
+
+            <div class="form-group">
+                <label for="phoneNumber"><i class="fas fa-phone"></i>Phone Number:</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" required placeholder="Enter phone number">
+            </div>
+
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i>Email:</label>
+                <input type="email" id="email" name="email" required placeholder="Enter email address">
+            </div>
+
+            <div class="form-group">
+                <label for="salary"><i class="fas fa-money-bill-wave"></i>Salary:</label>
+                <input type="number" id="salary" name="salary" required placeholder="Enter salary amount">
+            </div>
+
+            <div class="form-group">
+                <label for="gameId"><i class="fas fa-gamepad"></i>Select Game:</label>
+                <select id="gameId" name="gameId" required>
+                    <option value="">-- Select a Game --</option>
+                    <th:block th:each="game : ${games}">
+                        <option th:value="${game.id}" th:text="${game.gameName}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+            <button type="submit">
+                <i class="fas fa-plus-circle"></i>
+                Add Coach
+            </button>
+        </form>
+
+        <a href="/admin/dashboard" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Back to Dashboard
+        </a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+    </script>
+</body>
+</html>
